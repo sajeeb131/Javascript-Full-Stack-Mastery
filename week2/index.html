@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registration Page</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>Registration Form</h2>
+    <form id="registrationForm">
+        <input type="text" id="firstName" placeholder="First Name">
+        <span id="firstNameError" class="error"></span><br>
+        <input type="text" id="lastName" placeholder="Last Name">
+        <span id="lastNameError" class="error"></span><br>
+        <input type="text" id="username" placeholder="Username">
+        <span id="usernameError" class="error"></span><br>
+        <input type="password" id="password" placeholder="Password">
+        <span id="passwordError" class="error"></span><br>
+        <input type="submit" value="Submit">
+    </form>
+    <p id="successMessage" class="error"></p>
+</div>
+
+<script>
+document.getElementById("registrationForm").onsubmit = function(event) {
+    event.preventDefault();
+
+    var firstName = document.getElementById("firstName").value.trim();
+    var lastName = document.getElementById("lastName").value.trim();
+    var username = document.getElementById("username").value.trim();
+    var password = document.getElementById("password").value;
+
+    var firstNameError = document.getElementById("firstNameError");
+    var lastNameError = document.getElementById("lastNameError");
+    var usernameError = document.getElementById("usernameError");
+    var passwordError = document.getElementById("passwordError");
+    var successMessage = document.getElementById("successMessage");
+
+    var valid = true;
+
+    // Validation for First Name
+    if (firstName === "") {
+        firstNameError.innerText = "First Name is required";
+        valid = false;
+    } else if (!/^[a-zA-Z]+$/.test(firstName)) {
+        firstNameError.innerText = "First Name should contain only letters";
+        valid = false;
+    } else {
+        firstNameError.innerText = "";
+    }
+
+    // Validation for Last Name
+    if (lastName === "") {
+        lastNameError.innerText = "Last Name is required";
+        valid = false;
+    } else if (!/^[a-zA-Z]+$/.test(lastName)) {
+        lastNameError.innerText = "Last Name should contain only letters";
+        valid = false;
+    } else {
+        lastNameError.innerText = "";
+    }
+
+    // Validation for Username
+    if (username === "") {
+        usernameError.innerText = "Username is required";
+        valid = false;
+    } else if (!/^[a-zA-Z0-9]+$/.test(username) || username.length < 4) {
+        usernameError.innerText = "Username should be at least 4 characters long and contain only letters and numbers";
+        valid = false;
+    } else {
+        usernameError.innerText = "";
+    }
+
+    // Validation for Password
+    if (password.length < 8 || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[0-9]/.test(password) || !/[!@#\$%\^&\*]/.test(password)) {
+        passwordError.innerText = "Password should be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character";
+        valid = false;
+    } else {
+        passwordError.innerText = "";
+    }
+
+    // If all fields pass validation
+    if (valid) {
+        successMessage.innerText = "Registration successful!";
+    } else {
+        successMessage.innerText = "";
+    }
+};
+</script>
+
+</body>
+</html>
