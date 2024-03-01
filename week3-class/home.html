@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container-home">
+        <h1> <span color="cyan">Welcome</span>, You have logged in</h1>
+
+        
+        <div class="todo">
+            <input type="text" id="newItem" placeholder="add new item">
+            <button id="button" onclick="newTask()">Add Item</button>
+            <ul id="list">
+                
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function newTask(){
+            const list = document.getElementById('list');
+            const task = document.getElementById('newItem').value.trim();
+
+            const newL = document.createElement("ul");
+            const checkbox = document.createElement("input[type=checkbox]");
+            const taskName = document.createElement("h3");
+            
+        }
+    </script>
+</body>
+</html>
