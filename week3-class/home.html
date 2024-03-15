@@ -12,8 +12,11 @@
 
         
         <div class="todo">
-            <input type="text" id="newItem" placeholder="add new item">
-            <button id="button" onclick="newTask()">Add Item</button>
+            <div class="main">
+                <input type="text" id="newItem" placeholder="add new item">
+                <button class="mButton" id="button" onclick="newTask()">Add Item</button>
+            </div>
+            
             <ul id="list">
                 
             </ul>
@@ -25,11 +28,51 @@
             const list = document.getElementById('list');
             const task = document.getElementById('newItem').value.trim();
 
-            const newL = document.createElement("ul");
-            const checkbox = document.createElement("input[type=checkbox]");
-            const taskName = document.createElement("h3");
+
+            const newL = document.createElement("li");
+            newL.classList.add("addTask")
+            const checkbox = document.createElement("input");
+            checkbox.setAttribute("type","checkbox");
+            checkbox.addEventListener("change", ()=>{
+                newL.classList.toggle("taskDone")
+            })
+            
+            const taskName = document.createElement("h5");
+            taskName.innerText = task;
+            const button = document.createElement("button")
+            button.innerText = "delete" 
+            button.classList.add("button")
+            button.addEventListener('click', deleteF)
+            
+
+            newL.appendChild(checkbox)
+            newL.appendChild(taskName)
+            newL.appendChild(button)
+
+            document.getElementById('list').appendChild(newL)
+
+            newL.addEventListener('mouseover', taskHover)
+            
+
+            
+
             
         }
+        function deleteF(e) {
+            console.log("Inside delete");
+            const listItem = e.target.closest(".addTask"); 
+            if (listItem) {
+                listItem.remove(); 
+            }
+        }
+        function taskHover(e){
+            const listItem = e.target.closest(".addTask"); 
+            listItem.classList.toggle("currentTask")
+            
+            
+        }
+        
+        
     </script>
 </body>
 </html>
