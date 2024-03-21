@@ -8,12 +8,26 @@
 </head>
 <body>
     <div class="container-home">
-        <h1> <span color="cyan">Welcome</span>, You have logged in</h1>
+        <h1 class="header-main"> <span color="cyan">Welcome</span>, Create Your Todo List</h1>
 
         
         <div class="todo">
-            <input type="text" id="newItem" placeholder="add new item">
-            <button id="button" onclick="newTask()">Add Item</button>
+            <div class="main">
+                <input type="text" id="newItem" placeholder="add new item">
+                <button class="mButton" id="button" onclick="newTask()">Add Item</button>
+            
+                <div class="filter">
+                    <select name="filter" id="filter" >
+                        <option value="all">All</option>
+                        <option value="today">Today</option>
+                        <option value="tomorrow">Tomorrow</option>
+                        <option value="yesterday">Yesterday</option>
+                    </select>
+                </div>
+            </div>
+            
+            
+            
             <ul id="list">
                 
             </ul>
@@ -21,15 +35,109 @@
     </div>
 
     <script>
-        function newTask(){
-            const list = document.getElementById('list');
-            const task = document.getElementById('newItem').value.trim();
+        
 
-            const newL = document.createElement("ul");
-            const checkbox = document.createElement("input[type=checkbox]");
-            const taskName = document.createElement("h3");
+        const filters = ["all", "today", "tomorrow", "yesterday"] ;
+        const tasks = [];
+        const list = document.getElementById('list');
+        
+        const filterSelect = document.getElementById("filter")
+        filterSelect.addEventListener("change", (event)=> changeFilter(event))
+        
+
+        function newTask(){
+            const task = document.getElementById('newItem').value.trim();
+            if(task=="") {
+                alert("Enter a task name")
+                return;
+            }
+            // split the input and store it inside the array
+            const parts = task.split("@")
+            const taskObject = {
+                task: parts[0].trim(), 
+                tag: parts[1].trim()
+            }
+            tasks.push(taskObject)
+            
+            render(filterSelect.value)
+            document.getElementById('newItem').value = ""
+            
             
         }
+        function render(tag){
+            list.innerHTML = "";
+            tasks.forEach((task, index) => {
+                
+                if( tag== "all" || task.tag == tag ){
+                    const newL = document.createElement("li");
+                    newL.classList.add("addTask")
+
+                    // create checkbox
+                    const checkbox = document.createElement("input");
+                    checkbox.setAttribute("type","checkbox");
+                    checkbox.addEventListener("change", ()=>{
+                        newL.classList.toggle("taskDone")
+                    })
+                    
+                    //create h5
+                    const taskName = document.createElement("h5");
+                    taskName.innerText = task.task;
+
+                    //create new div
+                    const div = document.createElement("div");
+                    div.classList.add("checkboxAndName")
+                    div.append(checkbox)
+                    div.append(taskName)
+                    // div.innerHTML = `
+                    //     <input type="checkbox" onChange="changeStatus(${newL})">
+                    //     <h5>${task.task}</h5>
+                    // `;
+
+                    //create delete button
+                    const button = document.createElement("button")
+                    button.innerText = "delete" 
+                    button.classList.add("button") 
+                    button.addEventListener('click', () => deleteF(index, tag))
+                    
+                    //append 
+                    newL.appendChild(div)
+                    newL.appendChild(button)
+
+                    document.getElementById('list').appendChild(newL)
+
+                    // newL.addEventListener('mouseover', taskHover)
+                }
+                
+                
+                
+            });
+            
+        }
+
+        function changeFilter(event){
+            const selectedTag = event.target.value
+            render(selectedTag)
+        }
+        
+        function deleteF(index, tag) {
+            tasks.splice(index, 1)
+            render(tag);
+
+            // const listItem = e.target.closest(".addTask"); 
+            // if (listItem) {
+            //     listItem.remove(); 
+            // }
+
+
+        }
+        function taskHover(e){
+            const listItem = e.target.closest(".addTask"); 
+            listItem.classList.toggle("currentTask")
+            
+            
+        }
+        
+        
     </script>
 </body>
 </html>
