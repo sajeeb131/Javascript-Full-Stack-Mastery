@@ -18,10 +18,7 @@
             
                 <div class="filter">
                     <select name="filter" id="filter" >
-                        <option value="all">All</option>
-                        <option value="today">Today</option>
-                        <option value="tomorrow">Tomorrow</option>
-                        <option value="yesterday">Yesterday</option>
+                        
                     </select>
                 </div>
             </div>
@@ -40,6 +37,7 @@
         const filters = ["all", "today", "tomorrow", "yesterday"] ;
         const tasks = [];
         const list = document.getElementById('list');
+        updateFilter()
         
         const filterSelect = document.getElementById("filter")
         filterSelect.addEventListener("change", (event)=> changeFilter(event))
@@ -57,6 +55,15 @@
                 task: parts[0].trim(), 
                 tag: parts[1].trim()
             }
+
+            //update filter if new tag found
+            if (!filters.some(filter => filter === taskObject.tag)) {
+                filters.push(parts[1].trim());
+                updateFilter();
+                console.log("inside if");
+            }
+
+            
             tasks.push(taskObject)
             
             render(filterSelect.value)
@@ -107,13 +114,21 @@
 
                     // newL.addEventListener('mouseover', taskHover)
                 }
-                
-                
-                
+ 
             });
             
         }
 
+        function updateFilter(tag){
+            
+            //create dropdown
+            const dropdown = document.getElementById("filter");
+            dropdown.innerHTML = "";
+            // Iterate through the filters array 
+            filters.forEach(element => {  
+                dropdown.insertAdjacentHTML("beforeend", `<option value="${element}">${element}</option>`);
+            });
+        }
         function changeFilter(event){
             const selectedTag = event.target.value
             render(selectedTag)
